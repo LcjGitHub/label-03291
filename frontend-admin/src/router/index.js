@@ -25,6 +25,12 @@ const routes = [
         name: 'Customer',
         component: () => import('@/views/customer/Management.vue'),
         meta: { title: '客户管理', icon: 'UserFilled' }
+      },
+      {
+        path: 'customer/:id',
+        name: 'CustomerDetail',
+        component: () => import('@/views/customer/Detail.vue'),
+        meta: { title: '客户详情', icon: 'UserFilled' }
       }
     ]
   },

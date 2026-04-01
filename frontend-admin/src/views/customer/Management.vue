@@ -1,13 +1,15 @@
 <script setup>
 import { ref, reactive, computed, onMounted, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
 import { useCustomerStore } from '@/stores/customer'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import {
-  Search, Refresh, Plus, Edit, Delete, Download,
+  Search, Refresh, Plus, Edit, Delete, Download, View,
   UserFilled, Phone, Message, OfficeBuilding
 } from '@element-plus/icons-vue'
 
 const store = useCustomerStore()
+const router = useRouter()
 
 // ==================== 搜索 & 筛选 ====================
 function handleSearch() {
@@ -86,6 +88,10 @@ function openEdit(row) {
   currentId.value = row.id
   dialogVisible.value = true
   nextTick(() => formRef.value?.clearValidate())
+}
+
+function openDetail(row) {
+  router.push({ name: 'CustomerDetail', params: { id: row.id } })
 }
 
 async function handleSubmit() {
@@ -321,9 +327,18 @@ onMounted(() => store.fetchList())
           </template>
         </el-table-column>
         <el-table-column label="创建时间" prop="createTime" width="120" align="center" />
-        <el-table-column label="操作" width="200" align="center" fixed="right">
+        <el-table-column label="操作" width="260" align="center" fixed="right">
           <template #default="{ row }">
             <div class="action-cell">
+              <el-button
+                type="primary"
+                text
+                size="small"
+                :icon="View"
+                @click="openDetail(row)"
+              >
+                查看
+              </el-button>
               <el-button
                 type="primary"
                 text

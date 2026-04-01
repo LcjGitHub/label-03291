@@ -79,6 +79,19 @@ export const useCustomerStore = defineStore('customer', () => {
     queryParams.value = { page: 1, pageSize: 10, keyword: '', status: '', level: '' }
   }
 
+  async function fetchDetail(id) {
+    loading.value = true
+    try {
+      const res = await customerApi.getDetail(id)
+      if (res.code === 200) {
+        return res.data
+      }
+      return null
+    } finally {
+      loading.value = false
+    }
+  }
+
   return {
     list,
     total,
@@ -89,6 +102,7 @@ export const useCustomerStore = defineStore('customer', () => {
     updateCustomer,
     deleteCustomer,
     batchDeleteCustomers,
-    resetQuery
+    resetQuery,
+    fetchDetail
   }
 })

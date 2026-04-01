@@ -97,6 +97,16 @@ export const customerApi = {
     })
   },
 
+  /** 获取客户详情 */
+  getDetail(id) {
+    return mockDelay(() => {
+      const list = getStoredList()
+      const customer = list.find((c) => c.id === id)
+      if (!customer) return { code: 404, message: '客户不存在' }
+      return { code: 200, data: customer, message: 'ok' }
+    })
+  },
+
   /** 批量删除 */
   batchDelete(ids) {
     return mockDelay(() => {

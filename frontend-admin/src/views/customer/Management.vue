@@ -1,11 +1,14 @@
 <script setup>
 import { ref, reactive, computed, onMounted, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
 import { useCustomerStore } from '@/stores/customer'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import {
-  Search, Refresh, Plus, Edit, Delete, Download,
+  Search, Refresh, Plus, View, Edit, Delete, Download,
   UserFilled, Phone, Message, OfficeBuilding
 } from '@element-plus/icons-vue'
+
+const router = useRouter()
 
 const store = useCustomerStore()
 
@@ -114,6 +117,10 @@ function handleDialogClose() {
 }
 
 // ==================== 删除 ====================
+function handleView(row) {
+  router.push(`/customer/${row.id}`)
+}
+
 async function handleDelete(row) {
   await ElMessageBox.confirm(
     `确定要删除客户「${row.name}」吗？此操作不可撤销。`,
@@ -321,9 +328,18 @@ onMounted(() => store.fetchList())
           </template>
         </el-table-column>
         <el-table-column label="创建时间" prop="createTime" width="120" align="center" />
-        <el-table-column label="操作" width="200" align="center" fixed="right">
+        <el-table-column label="操作" width="260" align="center" fixed="right">
           <template #default="{ row }">
             <div class="action-cell">
+              <el-button
+                type="primary"
+                text
+                size="small"
+                :icon="View"
+                @click="handleView(row)"
+              >
+                查看
+              </el-button>
               <el-button
                 type="primary"
                 text
